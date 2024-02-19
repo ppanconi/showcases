@@ -1,0 +1,14 @@
+{
+    "name": "Bun",
+    "image": "ghcr.io/nhaef/devcontainer-bun:latest",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "streetsidesoftware.code-spell-checker",
+                "dbaeumer.vscode-eslint",
+                "infeng.vscode-react-typescript",
+				"planbcoding.vscode-react-refactor"
+            ]
+        }
+    }
+}
