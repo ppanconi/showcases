@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { useContext } from 'react';
-import { FPTreeExplorerModelContext, FPTreeItem } from './FPTreeExplorerModel';
-import { SimpleHtmlFPTreeExplorerView } from './SimpleHtmlFPTreeExplorerView';
+import { FPTreeExplorerModelContext, FPTreeExplorerModelProvider } from './FPTreeExplorerModel';
 import { WithInMemoryFPTreeExplorerModelProps, WithInMemoryFPTreeExplorerProviderModel } from './InMemoryFPTreeExplorerModel';
+import { SimpleHtmlFPTreeExplorerView } from './SimpleHtmlFPTreeExplorerView';
 
-export const SimpleHtmlFPTreeExplorerViewWithInMemoryContextModel: React.FunctionComponent = () => {
+export const SimpleHtmlFPTreeExplorerOnInMemoryContextModelView: React.FunctionComponent = () => {
   const modelProvider = useContext(FPTreeExplorerModelContext);
   return <>{modelProvider ?
       <SimpleHtmlFPTreeExplorerView 
@@ -15,8 +15,7 @@ export const SimpleHtmlFPTreeExplorerViewWithInMemoryContextModel: React.Functio
   </>;
 };
 
-
-export const SimpleHtmlFPTreeExplorerViewWithInMemoryModel: React.FunctionComponent<WithInMemoryFPTreeExplorerModelProps> = (props) => {
+export const SimpleHtmlFPTreeExplorerOnInMemoryModelView: React.FunctionComponent<WithInMemoryFPTreeExplorerModelProps> = (props) => {
   return <WithInMemoryFPTreeExplorerProviderModel tree={props.tree} postItemSelection={props.postItemSelection}>
     {(modelProvider: FPTreeExplorerModelProvider) => 
       <SimpleHtmlFPTreeExplorerView

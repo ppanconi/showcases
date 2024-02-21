@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Convert, Doc, SAMPLE_JSON } from './Doc';
 import { TreeNode } from '../components/flat-path-tree-explorer/InMemoryFPTreeExplorerModel';
 import { FPTreeItem } from '../components/flat-path-tree-explorer/FPTreeExplorerModel';
-import { SimpleHtmlFPTreeExplorerViewWithInMemoryModel } from '../components/flat-path-tree-explorer/SimpleHtmlFPTreeExplorerOnInMemoryModelView';
+import { SimpleHtmlFPTreeExplorerOnInMemoryModelView } from '../components/flat-path-tree-explorer/SimpleHtmlFPTreeExplorerOnInMemoryModelView';
 
 interface JsonDocStructureExplorerState {
     json: string;
@@ -44,7 +44,7 @@ const JsonDocStructureExplorer: React.FunctionComponent = () => {
             <p style={{color: "red"}}>{state.parsingError?.message}</p>
         }
         {state.doc &&
-            <SimpleHtmlFPTreeExplorerViewWithInMemoryModel 
+            <SimpleHtmlFPTreeExplorerOnInMemoryModelView 
                 tree={mapDocToTreeNode(state.doc)}
                 postItemSelection={selItem => setState({...state, doc: undefined, selectedItem: selItem})}
             />

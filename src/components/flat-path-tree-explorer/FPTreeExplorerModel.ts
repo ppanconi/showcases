@@ -12,8 +12,6 @@ export interface FPTreeExplorableItem {
     children?: FPTreeItem[];
   }
 
-
-
 export interface FPTreeExplorerModelProvider {
     currentItem: FPTreeExplorableItem;
     onExploreItem: (item: FPTreeItem) => void;
