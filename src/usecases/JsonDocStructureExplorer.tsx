@@ -1,12 +1,15 @@
 import * as React from 'react';
-import { Convert, Doc, SAMPLE_JSON } from './Doc';
-import { TreeNode } from '../components/flat-path-tree-explorer/InMemoryFPTreeExplorerModel';
+import { Button, Container, Form, Header, Segment, SegmentInline, TextArea } from 'semantic-ui-react';
 import { FPTreeItem } from '../components/flat-path-tree-explorer/FPTreeExplorerModel';
+import { TreeNode } from '../components/flat-path-tree-explorer/InMemoryFPTreeExplorerModel';
+import { ModalFPTreeExplorerOnInMemoryModelView } from '../components/flat-path-tree-explorer/ModalFPTreeExplorerOnInMemoryModelView';
 import { SimpleHtmlFPTreeExplorerOnInMemoryModelView } from '../components/flat-path-tree-explorer/SimpleHtmlFPTreeExplorerOnInMemoryModelView';
+import { Convert, Doc, SAMPLE_JSON } from './Doc';
 
 interface JsonDocStructureExplorerState {
     json: string;
     doc?: Doc;
+    modal: boolean;
     parsingError?: Error;
     selectedItem?: FPTreeItem;
 }
@@ -20,41 +23,69 @@ function mapDocToTreeNode(doc: Doc): TreeNode {
 }
 
 const JsonDocStructureExplorer: React.FunctionComponent = () => {
-    const [state, setState] = React.useState<JsonDocStructureExplorerState>({json: SAMPLE_JSON});
+    const [state, setState] = React.useState<JsonDocStructureExplorerState>({json: SAMPLE_JSON, modal: false});
 
-    const parseJson = () => {
+    const showModalExplorer = state.doc && state.modal;
+    const showInlineExplorer = state.doc && !state.modal;
+
+    const parseJson = (modal: boolean) => {
         try {
             const doc = Convert.toDoc(state.json);
-            setState({...state, doc: doc, parsingError: undefined, selectedItem: undefined});
+            setState({...state, doc: doc, parsingError: undefined, selectedItem: undefined, modal: modal});
         } catch(e) {
             setState({...state, parsingError: e as Error, doc: undefined, selectedItem: undefined});     
         }
         
     };
 
-    return <div>
-        <textarea 
-            rows={state.doc ? 10 : 20}
-            cols={70}
-            value={state.json}
-            onChange={e => setState({...state, json: e.target.value})}
-        />
-        <p><button onClick={parseJson}>Explore</button></p>        
+    return <Container style={{ margin: 20 }}>
+        
+        <Segment>
+            <Form>
+                <Header size="small">
+                    <TextArea 
+                        id="ta"
+                        rows={state.doc ? 10 : 20}
+                        cols={70}
+                        value={state.json}
+                        onChange={e => setState({...state, json: e.target.value})}
+                    />
+                </Header>
+                {!state.doc &&     
+                <SegmentInline >
+                    <Button onClick={() => parseJson(false)}>Explore</Button>
+                    <Button onClick={() => parseJson(true)}>Explore in a Modal</Button>        
+                </SegmentInline>
+                }
+            </Form>
+        </Segment>
         {state.parsingError && 
             <p style={{color: "red"}}>{state.parsingError?.message}</p>
         }
-        {state.doc &&
+        {showInlineExplorer &&
+            <Segment>
+            <SegmentInline>
             <SimpleHtmlFPTreeExplorerOnInMemoryModelView 
-                tree={mapDocToTreeNode(state.doc)}
+                tree={mapDocToTreeNode(state.doc!)}
                 postItemSelection={selItem => setState({...state, doc: undefined, selectedItem: selItem})}
             />
+            </SegmentInline>
+            </Segment>
+        }
+        {showModalExplorer &&
+            <ModalFPTreeExplorerOnInMemoryModelView 
+                title={"Select Document"}
+                tree={mapDocToTreeNode(state.doc!)}
+                postItemSelection={selItem => setState({...state, doc: undefined, selectedItem: selItem})}
+                >
+            </ModalFPTreeExplorerOnInMemoryModelView>
         }
         {state.selectedItem && 
             <p>
-                Selected Doc: {state.selectedItem.text}
+                Selected Doc: <b>{state.selectedItem.text}</b>
             </p>
         }
-    </div>;
+    </Container>;
 };
 
 export default JsonDocStructureExplorer;

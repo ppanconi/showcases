@@ -1,5 +1,6 @@
 import React from "react";
 import { FPTreeItem, FPTreeExplorerProps } from "./FPTreeExplorerModel";
+import { Breadcrumb, List, ListItem } from "semantic-ui-react";
 
 interface SimpleHtmlFPTreeExplorerViewProps {}
 
@@ -13,10 +14,14 @@ export const SimpleHtmlFPTreeExplorerView: React.FunctionComponent<FPTreeExplore
   return (
     <div style={{textAlign: "left"}}>
       <Breadcrumb
-        items={[...currentItem.path, currentItem.item]}
-        onClick={ (clickedItem: FPTreeItem) => onClick(clickedItem!)}
-        onSelect={onSelectItem}
-        selected={selectedItem}
+        sections={[...currentItem.path, currentItem.item]
+          .map((item, index) => ({ 
+            key: item.key, 
+            content: <>{item.text} <input type="radio" style={{verticalAlign: "middle"}} checked={selectedItem?.key === item.key} onChange={(_) => onSelectItem(item)}></input></>, 
+            active: index === currentItem.path.length,
+            onClick: index !== currentItem.path.length ? () => onClick(item) : undefined
+          }))}
+        icon='right angle'
       />
       <DetailsList 
          onClick={(clickedItem: FPTreeItem) => onClick(clickedItem!)}
@@ -34,35 +39,20 @@ interface InnerProps {
     onSelect: (item: FPTreeItem) => void;
     selected?: FPTreeItem;
 }
-
-const Breadcrumb: React.FunctionComponent<InnerProps> = ({ items, onClick, onSelect, selected }) => {
-    return (
-      <div>
-        <p>
-          {items.map((item, index) => (
-            <span key={index}> {" > "}
-              {index === items.length - 1 ? (
-                <b>{item.text}</b>
-              ) : (
-                <a href="#" onClick={(_) => onClick(item)}>{item.text}</a>
-              )}
-              <input type="radio" checked={selected?.key === item.key} onChange={(_) => onSelect(item)}></input>
-            </span>
-          ))}
-        </p>
-      </div>
-    );
-  };
   
 const DetailsList: React.FunctionComponent<InnerProps> = ({items, onClick, onSelect, selected}) => {
-  return <ul>
-    {items.map(item => <li key={item.key}>
-      <a href="#" onClick={(_) => onClick(item)}>{item.text}</a>
-      <input 
-        type="radio"
-        value={item.key} 
-        checked={selected?.key === item.key} 
-        onChange={(_) => onSelect(item)}></input>
-    </li>)}
-  </ul>;
+  return <List bulleted>
+    {items.map(item => 
+      <ListItem key={item.key}>
+         <a href="#" onClick={(_) => onClick(item)}>{item.text}</a>&nbsp; 
+         <input 
+          type="radio"
+          value={item.key} 
+          checked={selected?.key === item.key} 
+          onChange={(_) => onSelect(item)}
+          style={{verticalAlign: "middle"}}  
+         ></input>
+      </ListItem>
+    )}
+  </List>;
 }

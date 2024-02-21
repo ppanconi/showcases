@@ -30,7 +30,7 @@ function findNode(tree: TreeNode, key: string, path: TreeNode[]) : {currentNode:
 // -----------------------
 
 /**
- * Custom hook to link generic business logic to
+ * hook to link generic business logic to
  * specific React state management 
  */
 function useModelProvider(props: WithInMemoryFPTreeExplorerModelProps): FPTreeExplorerModelProvider {

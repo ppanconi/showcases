@@ -3,30 +3,29 @@
 /* eslint-disable no-empty */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const SAMPLE_JSON =  
-`
-{"title": "mio doc",
+`{"title": "mio doc",
  "subParts": [{
     "title": "sub 1",
     "subParts": [{
-        "title": "sub 1_1",
+        "title": "sub 1-1",
         "subParts": [{
-            "title": "sub 1_1_1",
+            "title": "sub 1-1-1",
             "subParts": []
            },
-           { "title": "sub 1_1_2",
+           { "title": "sub 1-1-2",
               "subParts": []
            }
         ]
         },
         {
-          "title": "sub 1_2",
+          "title": "sub 1-2",
            "subParts": []
         }]
     },
     {
      "title": "sub 2",
       "subParts": [{
-        "title": "sub 2_1",
+        "title": "sub 2-1",
         "subParts": []
       }]
     }
@@ -188,16 +187,9 @@ function a(typ: any) {
     return { arrayItems: typ };
 }
 
-function u(...typs: any[]) {
-    return { unionMembers: typs };
-}
 
 function o(props: any[], additional: any) {
     return { props, additional };
-}
-
-function m(additional: any) {
-    return { props: [], additional };
 }
 
 function r(name: string) {
