@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useContext } from 'react';
-import { FPTreeExplorerModelContext, FPTreeExplorerModelProvider } from './FPTreeExplorerModel';
-import { WithInMemoryFPTreeExplorerModelProps, WithInMemoryFPTreeExplorerProviderModel } from './InMemoryFPTreeExplorerModel';
+import { FPTreeExplorerModelContext } from './FPTreeExplorerModel';
+import { withInMemoryFPTreeExplorerProviderModel } from './InMemoryFPTreeExplorerModel';
 import { SimpleHtmlFPTreeExplorerView } from './SimpleHtmlFPTreeExplorerView';
 
 export const SimpleHtmlFPTreeExplorerOnInMemoryContextModelView: React.FunctionComponent = () => {
@@ -15,16 +15,7 @@ export const SimpleHtmlFPTreeExplorerOnInMemoryContextModelView: React.FunctionC
   </>;
 };
 
-export const SimpleHtmlFPTreeExplorerOnInMemoryModelView: React.FunctionComponent<WithInMemoryFPTreeExplorerModelProps> = (props) => {
-  return <WithInMemoryFPTreeExplorerProviderModel tree={props.tree} postItemSelection={props.postItemSelection}>
-    {(modelProvider: FPTreeExplorerModelProvider) => 
-      <SimpleHtmlFPTreeExplorerView
-          {...modelProvider}
-      />
-    }
-  </WithInMemoryFPTreeExplorerProviderModel>
-};
-
+export const SimpleHtmlFPTreeExplorerOnInMemoryModelView = withInMemoryFPTreeExplorerProviderModel(SimpleHtmlFPTreeExplorerView)
 
 
 

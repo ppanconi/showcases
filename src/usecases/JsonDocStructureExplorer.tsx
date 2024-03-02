@@ -76,6 +76,7 @@ const JsonDocStructureExplorer: React.FunctionComponent = () => {
             <ModalFPTreeExplorerOnInMemoryModelView 
                 title={"Select Document"}
                 tree={mapDocToTreeNode(state.doc!)}
+                open={true}
                 postItemSelection={selItem => setState({...state, doc: undefined, selectedItem: selItem})}
                 >
             </ModalFPTreeExplorerOnInMemoryModelView>

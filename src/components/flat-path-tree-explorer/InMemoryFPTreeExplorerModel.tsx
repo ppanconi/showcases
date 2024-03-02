@@ -1,5 +1,5 @@
 import { PropsWithChildren, useState, ReactNode } from "react"
-import { FPTreeExplorerModelContext, FPTreeExplorerModelProvider, FPTreeItem } from "./FPTreeExplorerModel"
+import { FPTreeExplorerModelContext, FPTreeExplorerModelProvider, FPTreeExplorerProps, FPTreeItem } from "./FPTreeExplorerModel"
 
 /**
  * generic business logic
@@ -78,3 +78,17 @@ export const WithInMemoryFPTreeExplorerProviderModel:
     return <>{props.children(modelProvider)}</>;
 }
 
+type Subtract<T, V> = Pick<T, Exclude<keyof T, keyof V>>;
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const withInMemoryFPTreeExplorerProviderModel = 
+    <P extends FPTreeExplorerProps>(Component: React.ComponentType<P>) : React.FC<Subtract<P, FPTreeExplorerProps> & WithInMemoryFPTreeExplorerModelProps> =>
+    ({tree, postItemSelection, ...props}) => 
+    <WithInMemoryFPTreeExplorerProviderModel tree={tree} postItemSelection={postItemSelection}>
+        {(modelProvider: FPTreeExplorerModelProvider) => 
+            <Component
+                {...modelProvider}    
+                {...props as Subtract<P, FPTreeExplorerProps>}
+            />
+        }
+    </WithInMemoryFPTreeExplorerProviderModel>;
