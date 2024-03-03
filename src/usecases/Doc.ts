@@ -1,6 +1,4 @@
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-empty */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable */
 export const SAMPLE_JSON =  
 `{"title": "mio doc",
  "subParts": [{
@@ -129,7 +127,7 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
         return d;
     }
 
-    function transformObject(props: { [k: string]: any }, additional: any, val: any): any {
+    function transformObject(props: Record<string, any>, additional: any, val: any): any {
         if (val === null || typeof val !== "object" || Array.isArray(val)) {
             return invalidValue(l(ref || "object"), val, key, parent);
         }

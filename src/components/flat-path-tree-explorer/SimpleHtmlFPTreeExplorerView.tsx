@@ -2,6 +2,7 @@ import React from "react";
 import { FPTreeItem, FPTreeExplorerProps } from "./FPTreeExplorerModel";
 import { Breadcrumb, List, ListItem } from "semantic-ui-react";
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface SimpleHtmlFPTreeExplorerViewProps {}
 
 export const SimpleHtmlFPTreeExplorerView: React.FunctionComponent<FPTreeExplorerProps<SimpleHtmlFPTreeExplorerViewProps>> = (props) => {
@@ -24,7 +25,7 @@ export const SimpleHtmlFPTreeExplorerView: React.FunctionComponent<FPTreeExplore
         icon='right angle'
       />
       <DetailsList 
-         onClick={(clickedItem: FPTreeItem) => onClick(clickedItem!)}
+         onClick={(clickedItem: FPTreeItem) => onClick(clickedItem)}
          onSelect={onSelectItem}
          items={currentItem.children ?? []}
          selected={selectedItem}
