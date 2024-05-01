@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { DSOption, DependentSelectionProps, eagerCollection } from '../components/dependent-selections/DependentSelectionsModel';
-import DependentSelection from '../components/dependent-selections/DependentSelectionsView';
+
+import { DSOptionWithDeps, dsOptionWithDeps } from '../components/dependent-selections/DependentSelectionsEagerModel';
+import { dsOptionCollection } from '../components/dependent-selections/DependentSelectionsModel';
+import DependentSelectionsEagerModelView from '../components/dependent-selections/DependentSelectionsEagerModelView';
 
 
 const options = [
@@ -19,23 +21,24 @@ const options = [
 
 const ObjectTypeSelector: React.FunctionComponent = () => {
 
-  const dsOptions = options.map(o => o.key === "FREE_TEXT" ? 
-    { key: "FREE_TEXT_MAIN_TYPE", 
-      label: o.text, 
-      subOptions: eagerCollection("FREE_TEXT_SUBTYPE", [{key: "FREE_TEXT", label: "Free Text"}, {key: "TGK_TEXT", label: "TGK Text"}])
-    }
+  const dsOptions: DSOptionWithDeps[] = options.map(
+    o => o.key === "FREE_TEXT" ? 
+      dsOptionWithDeps("FREE_TEXT_MAIN_TYPE", 
+        "Text", 
+        dsOptionCollection("FREE_TEXT_SUBTYPE", "Text Types", 
+          [dsOptionWithDeps("FREE_TEXT", "Free Text"), dsOptionWithDeps("TGK_TEXT", "TGK Text")], "radio"
+      )
+    )
     :
-     {
-      key: o.key, 
-      label: o.text
-    });
+    dsOptionWithDeps(o.key, o.text)
+  );
 
-  const optionsCollections = eagerCollection("OBJECT_TYPES", dsOptions);
+  const optionsCollections = dsOptionCollection("OBJECT_TYPES", "Objects Types", dsOptions);
 
-  return <DependentSelection 
-            optionsCollection={optionsCollections}
-            onSelection={(selected) => console.log("selected:", selected)}
-            selected={[]}/>;
+  return <DependentSelectionsEagerModelView 
+            entryCollection={optionsCollections}
+            onSelect={(selected) => console.log("selected:", selected.map(o => o.label).join(","))}
+            selections={[]}/>;
 };
 
 export default ObjectTypeSelector;

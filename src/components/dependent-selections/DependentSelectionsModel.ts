@@ -12,20 +12,36 @@ export const dsOption = (key: string,  label: string): DSOption => ({
 
 type DSOptionCollectionKey = string & { readonly __tag: unique symbol }
 
-export interface DSOptionCollection {
-    key: DSOptionCollectionKey
-    options?: DSOption[]
+type DSOptionCollectionType = "select" | "radio"
+
+export interface DSOptionCollection<P extends DSOption> {
+    key: DSOptionCollectionKey,
+    title: string,
+    type: DSOptionCollectionType,
+    options?: P[]
 }
 
-export const dsOptionCollection = (key: string,  options?: DSOption[]): DSOptionCollection => ({
+export const dsOptionCollection = <P extends DSOption>(key: string, title: string, options?: P[], type?: DSOptionCollectionType,): DSOptionCollection<P> => ({
     key: key as DSOptionCollectionKey,
+    title: title,
+    type: type ?? "select",
     options: options
 })
 
 export interface DependentSelectionsModelProvider {
     selections: DSOption[];
-    collections: DSOptionCollection[];
-    onSelect: (selected: DSOption) => void;
+    collections: DSOptionCollection<DSOption>[];
+    onSelect: (selected: DSOption[]) => void;
 }
 
-export type DependentSelectionsProps<P = unknown> = P & DependentSelectionsModelProvider
+export const updateSelection = (model: DependentSelectionsModelProvider, 
+                                collectionIndex: number, 
+                                selectedKey: string): void => {
+    model.onSelect([
+        ...model.selections.slice(0, collectionIndex), 
+        model.collections[collectionIndex].options!.find(o => o.key === selectedKey)!
+    ]);
+}
+
+
+export type DependentSelectionsProps<PR = unknown> = PR & DependentSelectionsModelProvider

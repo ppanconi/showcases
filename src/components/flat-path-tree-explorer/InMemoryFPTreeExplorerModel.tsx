@@ -71,8 +71,8 @@ export interface WithInMemoryFPTreeExplorerProviderModel extends WithInMemoryFPT
     children: (modelProvider: FPTreeExplorerModelProvider) => ReactNode;
 }
 
-export const WithInMemoryFPTreeExplorerProviderModel: React.FunctionComponent<PropsWithChildren<WithInMemoryFPTreeExplorerProviderModel>> = 
-    (props: PropsWithChildren<WithInMemoryFPTreeExplorerProviderModel>) => {
+export const WithInMemoryFPTreeExplorerProviderModel: React.FunctionComponent<WithInMemoryFPTreeExplorerProviderModel> = 
+    (props: WithInMemoryFPTreeExplorerProviderModel) => {
 
     const modelProvider = useModelProvider(props);
     
@@ -89,8 +89,8 @@ export const withInMemoryFPTreeExplorerProviderModel =
     <WithInMemoryFPTreeExplorerProviderModel tree={tree} postItemSelection={postItemSelection}>
         {(modelProvider: FPTreeExplorerModelProvider) => 
             <Component
-                {...modelProvider}    
-                {...(props as object) }
+                {...modelProvider }    
+                {...props as unknown as P }
             />
         }
     </WithInMemoryFPTreeExplorerProviderModel>;
